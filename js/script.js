@@ -9,7 +9,7 @@ const jobSelect = document.querySelector('#title');
 const otherJobInput = document.querySelector('#other-job-role');
 
 otherJobInput.style.display = 'none';
-console.log(jobOptions.value);
+console.log(jobSelect.value);
 
 jobSelect.addEventListener('change', () => {
     console.log(jobSelect.value)
@@ -23,3 +23,24 @@ jobSelect.addEventListener('change', () => {
         otherJobInput.value = '';
     }    
 })
+
+//T-shirt info section
+//change the color selection depending on the design chosen
+const designSelect = document.querySelector("#design");
+const colorSelect = document.querySelector("#color");
+const colorOptions = document.querySelectorAll("option[data-theme]");
+//console.log(designSelect.value)
+
+designSelect.addEventListener("change", () => {
+    
+    for(let i = 0; i < colorOptions.length; i++) {
+        
+        if (designSelect.value !== colorOptions[i].getAttribute("data-theme")) {
+            colorOptions[i].hidden = true;
+            colorOptions[i].disabled = true;
+        } else {
+            colorOptions[i].hidden = false;
+            colorOptions[i].disabled = false;
+        }
+    }
+});
