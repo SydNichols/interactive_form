@@ -31,16 +31,18 @@ const colorSelect = document.querySelector("#color");
 const colorOptions = document.querySelectorAll("option[data-theme]");
 //console.log(designSelect.value)
 
+colorSelect.disabled = true;
+
 designSelect.addEventListener("change", () => {
     
     for(let i = 0; i < colorOptions.length; i++) {
         
         if (designSelect.value !== colorOptions[i].getAttribute("data-theme")) {
             colorOptions[i].hidden = true;
-            colorOptions[i].disabled = true;
+            colorSelect.disabled = false;
         } else {
             colorOptions[i].hidden = false;
-            colorOptions[i].disabled = false;
+            colorSelect.disabled = false;
         }
     }
 });
