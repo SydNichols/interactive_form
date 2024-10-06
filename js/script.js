@@ -46,3 +46,31 @@ designSelect.addEventListener("change", () => {
         }
     }
 });
+
+//getting the item cost for each activity, converting to number, and adding it together for a total cost
+//intserting the total into the total item cost html
+
+const activityList = document.querySelector('#activities')
+const activityItems = document.querySelectorAll('#activities-box label input')
+
+let totalItemCost = 0;
+
+const totalCostElement = document.querySelector('#activities-cost');
+
+activityItems.forEach((checkbox) => 
+    checkbox.addEventListener('change', () => {
+        const itemCostString = checkbox.getAttribute('data-cost');
+        const itemCost = +itemCostString;
+
+        if(checkbox.checked) {
+            totalItemCost += itemCost;
+            console.log(totalItemCost);
+        } else {
+            totalItemCost -= itemCost;
+            console.log(totalItemCost);
+        }
+
+        totalCostElement.innerHTML = `Total: $${totalItemCost}`;
+    })
+);
+
