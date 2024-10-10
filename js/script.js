@@ -74,3 +74,29 @@ activityItems.forEach((checkbox) =>
     })
 );
 
+//adding payment choice display changes
+//when a payment selection is made, the corresponding payment message is displayed
+
+const paymentChoice = document.getElementById('payment');
+const creditCardChoice = document.getElementById('credit-card');
+const paypalChoice = document.getElementById('paypal');
+const bitcoinChoice = document.getElementById('bitcoin');
+
+paypalChoice.style.display = 'none';
+bitcoinChoice.style.display = 'none';
+
+paymentChoice.children[1].setAttribute('selected', true);
+
+paymentChoice.addEventListener('change', () => {
+    creditCardChoice.style.display = 'none';
+    paypalChoice.style.display = 'none';
+    bitcoinChoice.style.display = 'none';
+
+    if (paymentChoice.value === 'credit-card') {
+        creditCardChoice.style.display = 'block';
+    } else if (paymentChoice.value === 'paypal') {
+        paypalChoice.style.display = 'block';
+    } else if (paymentChoice.value === 'bitcoin') {
+        bitcoinChoice.style.display = 'block';
+    }
+});
