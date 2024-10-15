@@ -104,10 +104,30 @@ paymentChoice.addEventListener('change', () => {
 //creating form variables
 //adding listeners to check the form variables for valid submissions
 const form = document.querySelector('form');
-const nameInput = document.querySelector(input[id="name"]);
-const emailInput = document.querySelector(input[id="email"]);
+const nameInput = document.querySelector('input[id=name]');
+const emailInput = document.querySelector('input[id=email]');
 const activitiesBox = document.querySelector('#activities-box');
-const ccNum = document.querySelector('#cc-num');
+const cardNum = document.querySelector('#cc-num');
 const zipCode = document.querySelector('#zip');
-const cvv = document.querySelector('#cvv');
+const cvvInput = document.querySelector('#cvv');
 
+
+form.addEventListener('submit', (e) => {
+    //temporary prevent default
+    e.preventDefault();
+    console.log('form submission');
+
+    const nameValue = nameInput.value.trim();
+    const nameIsValid = /^[a-z ,.'-]+$/i.test(nameValue);
+
+    console.log('Is Name Valid?', nameIsValid);
+
+    if(!nameIsValid) {
+        e.preventDefault();
+    } else {
+        e.target.submit();
+    }
+
+
+
+})
