@@ -100,3 +100,14 @@ paymentChoice.addEventListener('change', () => {
         bitcoinChoice.style.display = 'block';
     }
 });
+
+//creating form variables
+//adding listeners to check the form variables for valid submissions
+const form = document.querySelector('form');
+const nameInput = document.querySelector(input[id="name"]);
+const emailInput = document.querySelector(input[id="email"]);
+const activitiesBox = document.querySelector('#activities-box');
+const ccNum = document.querySelector('#cc-num');
+const zipCode = document.querySelector('#zip');
+const cvv = document.querySelector('#cvv');
+
