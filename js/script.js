@@ -239,6 +239,8 @@ form.addEventListener('submit', (e) => {
     
     const validCVV = isValidCVV(cvvInput);
 
+    console.log(cvvInput.value.length);
+
     //if any input fields are invalid, the if statment should catch it and determing which error messaging should be shared.
     if(!nameIsValid || !emailIsValid || !activitySelected || (creditCardSelected && !validCardNumber) || (creditCardSelected && !validZip) || (creditCardSelected && !validCVV)) {
         //e.preventDefault();
@@ -271,11 +273,21 @@ form.addEventListener('submit', (e) => {
         } else {
             showValid(zipCodeInput);
         };
-
-        if(creditCardSelected && !validCVV) {
-            showNotValid(cvvInput);
+        //conditional error messaging
+        if(cvvInput.value.length === 0) {
+            cvvInput.parentElement.classList.add('not-valid');
+            cvvInput.parentElement.classList.remove('valid');
+            cvvInput.parentElement.lastElementChild.textContent = 'CVV number should not be empty!';
+            cvvInput.parentElement.lastElementChild.style.display = 'block';
         } else {
-            showValid(cvvInput);
+            if(creditCardSelected && !validCVV) {
+                cvvInput.parentElement.classList.add('not-valid');
+                cvvInput.parentElement.classList.remove('valid');
+                cvvInput.parentElement.lastElementChild.textContent = 'CVV must be a 3-digit number';
+                cvvInput.parentElement.lastElementChild.style.display = 'block';
+            } else {
+                showValid(cvvInput);
+            };
         };
     } else {
         //e.target.submit();
