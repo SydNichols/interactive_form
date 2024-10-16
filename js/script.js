@@ -57,7 +57,7 @@ let totalItemCost = 0;
 
 const totalCostElement = document.querySelector('#activities-cost');
 
-activityItems.forEach((checkbox) => 
+activityItems.forEach((checkbox) => {
     checkbox.addEventListener('change', () => {
         const itemCostString = checkbox.getAttribute('data-cost');
         const itemCost = +itemCostString;
@@ -72,7 +72,16 @@ activityItems.forEach((checkbox) =>
 
         totalCostElement.innerHTML = `Total: $${totalItemCost}`;
     })
-);
+
+    checkbox.addEventListener('focus', (e) => {
+        e.target.parentElement.classList.add('focus');
+    });
+
+    checkbox.addEventListener('blur', (e) => {
+        e.target.parentElement.classList.remove('focus');
+    })
+
+});
 
 //adding payment choice display changes
 //when a payment selection is made, the corresponding payment message is displayed
@@ -102,32 +111,137 @@ paymentChoice.addEventListener('change', () => {
 });
 
 //creating form variables
-//adding listeners to check the form variables for valid submissions
 const form = document.querySelector('form');
 const nameInput = document.querySelector('input[id=name]');
 const emailInput = document.querySelector('input[id=email]');
 const activitiesBox = document.querySelector('#activities-box');
-const cardNum = document.querySelector('#cc-num');
-const zipCode = document.querySelector('#zip');
+const cardNumInput = document.querySelector('#cc-num');
+const zipCodeInput = document.querySelector('#zip');
 const cvvInput = document.querySelector('#cvv');
 
+//adding functions to check the form variables for valid submissions
+function isValidName(name) {
+    const nameValue = name.value.trim();
+    const nameRegex = /^[a-z ,.'-]+$/i;
+    return nameRegex.test(nameValue);
+}
+
+function isEmailValid(email) {
+    const emailValue = email.value.trim();
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^s@]+$/;
+    return emailRegex.test(emailValue)
+}
+
+function isActivitySelected() {
+    let selected = false;
+    activityItems.forEach((checkbox) => {
+        if (checkbox.checked) {
+            selected = true;
+        }
+    });
+    return selected;
+}
+
+//credit card specific validators
+function isCreditCardSelected() {
+    return paymentChoice.value === 'credit-card';
+}
+
+function isValidCardNumber(number) {
+    const cardRegex = /^\d{13,16}$/; 
+    const cardNumber = number.value.trim();
+    return cardRegex.test(cardNumber)
+}
+
+function isValidZipCode(zip) {
+    const zipRegex = /^\d{5}$/;
+    const zipCode = zip.value.trim();
+    return zipRegex.test(zipCode)
+}
+
+function isValidCVV(cvv) {
+    const cvvRegex = /^\d{3}$/;
+    const cvvNumber = cvv.value.trim();
+    return cvvRegex.test(cvvNumber)
+}
+
+//functions to show or hide error messaging and focus elements
+function showNotValid(input) {
+    input.parentElement.classList.add('not-valid');
+    input.parentElement.classList.remove('valid');
+    input.parentElement.lastElementChild.style.display = 'block';
+}
+
+function showValid(input) {
+    input.parentElement.classList.add('valid');
+    input.parentElement.classList.remove('not-valid');
+    input.parentElement.lastElementChild.style.display = 'none';
+}
 
 form.addEventListener('submit', (e) => {
     //temporary prevent default
     e.preventDefault();
     console.log('form submission');
 
-    const nameValue = nameInput.value.trim();
-    const nameIsValid = /^[a-z ,.'-]+$/i.test(nameValue);
+    const nameIsValid = isValidName(nameInput);
+    console.log(nameIsValid);
 
-    console.log('Is Name Valid?', nameIsValid);
+    const emailIsValid = isEmailValid(emailInput);
+    console.log(emailIsValid);
 
-    if(!nameIsValid) {
-        e.preventDefault();
+    const activitySelected = isActivitySelected();
+    console.log(activitySelected);
+
+    const creditCardSelected = isCreditCardSelected();
+    console.log('Is it CC?', creditCardSelected);
+
+    const validCardNumber = isValidCardNumber(cardNumInput);
+
+    const validZip = isValidZipCode(zipCodeInput);
+    
+    const validCVV = isValidCVV(cvvInput);
+
+    //if any input fields are invalid, the if statment should catch it and determing which error messaging should be shared.
+    if(!nameIsValid || !emailIsValid || !activitySelected || (creditCardSelected && !validCardNumber) || (creditCardSelected && !validZip) || (creditCardSelected && !validCVV)) {
+        //e.preventDefault();
+        if(!nameIsValid) {
+            showNotValid(nameInput);
+        } else {
+            showValid(nameInput);
+        };
+
+        if(!emailIsValid) {
+            showNotValid(emailInput);
+        } else {
+            showValid(emailInput);
+        };
+
+        if(!activitySelected) {
+            showNotValid(activitiesBox);
+        } else {
+            showValid(activitiesBox);
+        };
+
+        if(creditCardSelected && !validCardNumber) {
+            showNotValid(cardNumInput);
+        } else {
+            showValid(cardNumInput);
+        };
+
+        if(creditCardSelected && !validZip) {
+            showNotValid(zipCodeInput);
+        } else {
+            showValid(zipCodeInput);
+        };
+
+        if(creditCardSelected && !validCVV) {
+            showNotValid(cvvInput);
+        } else {
+            showValid(cvvInput);
+        };
     } else {
-        e.target.submit();
+        //e.target.submit();
+        console.log('no error, good to submit')
     }
-
-
 
 })
