@@ -47,12 +47,35 @@ designSelect.addEventListener("change", () => {
     }
 });
 
-//getting the item cost for each activity, converting to number, and adding it together for a total cost
-//intserting the total into the total item cost html
-
+//establishing activity-related variables
 const activityList = document.querySelector('#activities')
 const activityItems = document.querySelectorAll('#activities-box label input')
 
+//function to check activity list for conflicting times
+function activityConflicts(activity) {
+    const daySelected = activity.getAttribute("data-day-and-time");
+
+    activityItems.forEach((item) => {
+        if(item !== activity) {
+            const itemsDay = item.getAttribute("data-day-and-time");
+            const itemLabel = item.parentElement;
+
+            if  (itemsDay === daySelected) {
+                if (activity.checked) {
+                    item.disabled = true;
+                    itemLabel.classList.add('disabled');
+                } else {
+                    item.disabled = false;
+                    itemLabel.classList.remove('disabled');
+                }
+            }
+        }
+    })
+
+};
+
+//getting the item cost for each activity, converting to number, and adding it together for a total cost
+//inserting the total into the total item cost html
 let totalItemCost = 0;
 
 const totalCostElement = document.querySelector('#activities-cost');
@@ -70,8 +93,10 @@ activityItems.forEach((checkbox) => {
             console.log(totalItemCost);
         }
 
+        activityConflicts(checkbox);
+
         totalCostElement.innerHTML = `Total: $${totalItemCost}`;
-    })
+    });
 
     checkbox.addEventListener('focus', (e) => {
         e.target.parentElement.classList.add('focus');
