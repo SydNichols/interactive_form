@@ -9,10 +9,9 @@ const jobSelect = document.querySelector('#title');
 const otherJobInput = document.querySelector('#other-job-role');
 
 otherJobInput.style.display = 'none';
-console.log(jobSelect.value);
 
 jobSelect.addEventListener('change', () => {
-    console.log(jobSelect.value)
+    //console.log(jobSelect.value)
 
     if (jobSelect.value === 'other') {
         otherJobInput.disabled = false;
@@ -87,10 +86,8 @@ activityItems.forEach((checkbox) => {
 
         if(checkbox.checked) {
             totalItemCost += itemCost;
-            console.log(totalItemCost);
         } else {
             totalItemCost -= itemCost;
-            console.log(totalItemCost);
         }
 
         activityConflicts(checkbox);
@@ -218,20 +215,19 @@ emailInput.addEventListener('keyup', () => {
 //if select form elements are not valid, the form should not submit
 form.addEventListener('submit', (e) => {
     //temporary prevent default
-    e.preventDefault();
-    console.log('form submission');
+    //e.preventDefault();
 
     const nameIsValid = isValidName(nameInput);
-    console.log(nameIsValid);
+    //console.log(nameIsValid);
 
     const emailIsValid = isEmailValid(emailInput);
-    console.log(emailIsValid);
+    //console.log(emailIsValid);
 
     const activitySelected = isActivitySelected();
-    console.log(activitySelected);
+    //console.log(activitySelected);
 
     const creditCardSelected = isCreditCardSelected();
-    console.log('Is it CC?', creditCardSelected);
+    //console.log(creditCardSelected);
 
     const validCardNumber = isValidCardNumber(cardNumInput);
 
@@ -239,11 +235,9 @@ form.addEventListener('submit', (e) => {
     
     const validCVV = isValidCVV(cvvInput);
 
-    console.log(cvvInput.value.length);
-
     //if any input fields are invalid, the if statment should catch it and determing which error messaging should be shared.
     if(!nameIsValid || !emailIsValid || !activitySelected || (creditCardSelected && !validCardNumber) || (creditCardSelected && !validZip) || (creditCardSelected && !validCVV)) {
-        //e.preventDefault();
+        e.preventDefault();
         if(!nameIsValid) {
             showNotValid(nameInput);
         } else {
@@ -290,8 +284,7 @@ form.addEventListener('submit', (e) => {
             };
         };
     } else {
-        //e.target.submit();
-        console.log('no error, good to submit')
+        e.target.submit();
     }
 
 })
