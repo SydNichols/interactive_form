@@ -203,6 +203,19 @@ function showValid(input) {
     input.parentElement.lastElementChild.style.display = 'none';
 }
 
+//real-time validation for the email input
+emailInput.addEventListener('keyup', () => {
+    const realTimeEmail = isEmailValid(emailInput);
+
+    if (!realTimeEmail) {
+        showNotValid(emailInput);
+    } else {
+        showValid(emailInput);
+    }
+})
+
+//validation based on form submission attempt
+//if select form elements are not valid, the form should not submit
 form.addEventListener('submit', (e) => {
     //temporary prevent default
     e.preventDefault();
