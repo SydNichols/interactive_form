@@ -32,18 +32,31 @@ const colorOptions = document.querySelectorAll("option[data-theme]");
 
 colorSelect.disabled = true;
 
-designSelect.addEventListener("change", () => {
-    
-    for(let i = 0; i < colorOptions.length; i++) {
-        
-        if (designSelect.value !== colorOptions[i].getAttribute("data-theme")) {
-            colorOptions[i].hidden = true;
-            colorSelect.disabled = false;
+function updateColors(selectedDesign) {
+    let firstOption = null;
+
+    colorOptions.forEach(option => {
+        if(option.getAttribute("data-theme") === selectedDesign) {
+            option.hidden = false;
+            if (!firstOption) {
+                firstOption = option;
+            }
         } else {
-            colorOptions[i].hidden = false;
-            colorSelect.disabled = false;
+            option.hidden = true;
         }
+    });
+
+    if (firstOption) {
+        firstOption.selected = true;
     }
+
+    colorSelect.disabled = selectedDesign === "Select Theme";
+}
+
+designSelect.addEventListener("change", (e) => {
+
+    const selectedDesign = e.target.value;
+    updateColors(selectedDesign);
 });
 
 //establishing activity-related variables
